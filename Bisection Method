@@ -1,31 +1,18 @@
-from matplotlib import pyplot as plt
-import sympy
-from sympy import Symbol, Derivative
-
-#GENERAL_PARAMETERS----------------------------------------------------------------------------------------------------#
-graphTitle= "Bisection Calculation"
-
-# Data on the X axis #
-x_values = []
-x_name= "X"
-
-# Data on the Y axis #
-y_values = []
-y_name= "Y"
-
-# Limits of the graph and jump between points in the graph#
-startLimit= 0
-endLimit= 10
-jump= 0.01
-
-# Estimated point root (ONE ROOT ONLY) #
-es= 0.0001
-xl= 4
-xu= 7
-
 #Bisection method------------------------------------------------------------------------------------------------------#
+
+#No se ocupa end criteria
+
+#Xi limite más chico
+xl= 0
+
+#Xu limite más grande
+xu= 1.7
+
+mathematicaRoot=1
+
 def f(x):
-    y = ((pow(x, 2) - 10*x + 25) * (x - sympy.exp(-3*x)))
+    #Acá va la función.
+    y = (xl**8)-1
     return y
 
 i= 0
@@ -37,6 +24,7 @@ while i <= 500:
     if abs(f(xr)) < 10**-7:
         print("\nNo. of iterations: " + str(i + 1))
         print(xr)
+        print("\nAccuracy: " + str(abs(1 - ((abs(mathematicaRoot - xr) / xr) * 100))) + " %")
         break
 
     # Bisection criterion (where is the root?) #
@@ -54,6 +42,7 @@ while i <= 500:
     if bisCr == 0:
         print("\nNo. of iterations: " + str(i + 1))
         print(xr)
+        print("\nAccuracy: " + str(abs(1 - ((abs(mathematicaRoot - xr) / xr) * 100))) + " %")
         break
 
     # Last iteration -> did not converge #
@@ -62,25 +51,6 @@ while i <= 500:
 
     i+= 1
 
-#PLOTTING--------------------------------------------------------------------------------------------------------------
-# Assign X and  Y values to axis #
-while startLimit < endLimit:
-    x_values.append(startLimit)
-    y_values.append(f(startLimit))
-    startLimit = startLimit + jump
-
-# Styles #
-"""plt.xkcd()"""
-
-# Add names and tags #
-fig, ax = plt.subplots()
-ax.set(xlabel= x_name, ylabel= y_name, title=graphTitle)
-
-# Add a grid #
-ax.grid()
-
-# Values #
-plt.plot(x_values, y_values, label='Python')
 
 # Plott data #
 plt.show()
