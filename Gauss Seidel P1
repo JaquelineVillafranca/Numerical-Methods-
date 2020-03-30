@@ -1,0 +1,57 @@
+a = {{6.0, 0, -1, 0, 0}, {-3, 3, 0, 0, 0}, {0, -1, 9, 0, 
+    0}, {0, -1, -8, 11, -2}, {-3, -1, 0, 0, 4}};
+b = {50, 0, 160, 0, 0};
+x = {0, 0, 0, 0, 0};
+n = Length[x];
+es = 1*10^-4;
+\[Lambda] = 0.292;
+imax = 150;
+
+counter = 0
+(*First part*)
+Do[
+ dummy1 = a[[i, i]];
+ Do[
+  a[[i, j]] = a[[i, j]]/dummy1;
+  counter++;
+  , {j, 1, n}];
+ b[[i]] = b[[i]]/dummy1;
+ counter++;
+ , {i, 1, n}]
+
+(*Second part*)
+Do[
+ sum = b[[i]];
+ Do[
+  If[i != j,
+     sum = sum - a[[i, j]]*x[[j]]]
+    counter++;
+  , {j, 1, n}];
+ x[[i]] = sum
+ , {i, 1, n}]
+iter = 1;
+Print["Iteration #1", x // N]
+
+(*Third part*)
+Do[
+ sentinel = 1;
+ Do[
+  old = x[[i]];
+  sum = b[[i]];
+  Do[
+   If[i != j,
+    sum = sum - a[[i, j]]*x[[j]]];
+   counter++;
+   , {j, 1, n}];
+  x[[i]] = \[Lambda]*sum + (1 - \[Lambda])*old;
+  If[sentinel == 1 && x[[i]] != 0,
+   ea = Abs[(x[[i]] - old)/x[[i]]]*100;
+   If[ea > es, sentinel = 0]];
+  , {i, 1, n}];
+ iter = iter + 1;
+ If[sentinel == 1 || iter >= imax, 
+  Print["The results for x1,x2,x3,x4,x5 are:", x // N, 
+   "respectively"]; Break[]];
+ , {k, 1, imax}]
+Print["Converged in ", iter, " iterations"]
+Print["Counter", counter]
