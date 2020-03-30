@@ -1,0 +1,66 @@
+
+A = {{6.0, 0, -1, 0, 0}, {-3, 3, 0, 0, 0}, {0, -1, 9, 0, 
+    0}, {0, -1, -8, 11, -2}, {-3, -1, 0, 0, 4}};
+B = {50, 0, 160, 0, 0};
+counter = 0
+Print["Matrix A = ", MatrixForm[A]];
+Print["Matrix B = ", MatrixForm[B]];
+Print[];
+n = Dimensions[A][[1]];
+
+
+(* Elimination algorithm *)
+Clear[k, i, j]
+For[k = 1, k <= n, k++,
+  For[i = k + 1, i <= n, i++,
+    factor = A[[i, k]]/A[[k, k]];
+    counter++;
+    For[j = k, j <= n, j++,
+     A[[i, j]] = A[[i, j]] - factor*A[[k, j]];
+     counter++;
+     ];
+    B[[i]] = B[[i]] - factor*B[[k]];
+    counter++;
+    ];
+  ];
+Print["Elimination algorithm:\n"];
+Print["Matrix U = ", MatrixForm[A]];
+Print["Matrix B' = ", MatrixForm[B]];
+Print[];
+
+(* Substitution algorithm *)
+x = List[x1, x2, x3, x4, x5];
+Print["Substitution algorithm:\n"];
+x[[5]] = B[[n]]/A[[n, n]];
+counter++;
+Print["k[", 4, "] iteration: x[", 4, "] = ", x[[4]]];
+(*Print[MatrixForm[{{A[[1,1]]*x[[1]],A[[1,2]]*x[[2]],A[[1,3]]*x[[3]],\
+A[[1,4]]*x[[4]]},{A[[2,1]]*x[[1]],A[[2,2]]*x[[2]],A[[2,3]]*x[[3]],A[[\
+2,4]]*x[[4]]},{A[[3,1]]*x[[1]],A[[3,2]]*x[[2]],A[[3,3]]*x[[3]],A[[3,4]\
+]*x[[4]]},{A[[4,1]]*x[[1]],A[[4,2]]*x[[2]],A[[4,3]]*x[[3]],A[[4,4]]*x[\
+[4]]}}]];*)
+
+For[i = n - 1, i >= 1, i--,
+  sum = B[[i]];
+  For[j = i + 1, j <= n, j++,
+   sum = sum - A[[i, j]]*x[[j]];
+   counter++;
+   ];
+  x[[i]] = sum/A[[i, i]];
+  counter++;
+  Print["k[", i, "] iteration: x[", i, "] = ", x[[i]]];
+  (*Print[MatrixForm[{{A[[1,1]]*x[[1]],A[[1,2]]*x[[2]],A[[1,3]]*x[[
+  3]],A[[1,4]]*x[[4]]},{A[[2,1]]*x[[1]],A[[2,2]]*x[[2]],A[[2,3]]*x[[
+  3]],A[[2,4]]*x[[4]]},{A[[3,1]]*x[[1]],A[[3,2]]*x[[2]],A[[3,3]]*x[[
+  3]],A[[3,4]]*x[[4]]},{A[[4,1]]*x[[1]],A[[4,2]]*x[[2]],A[[4,3]]*x[[
+  3]],A[[4,4]]*x[[4]]}}]];*)
+  ];
+Print[];
+
+Print["Final solution:\n"];
+Print[x];
+Print[];
+Print["Counter", counter];
+
+Print["Solution given by LinearSolve:\n"];
+LinearSolve[A, B]
