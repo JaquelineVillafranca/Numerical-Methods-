@@ -4,29 +4,14 @@ from matplotlib import pyplot as plt
 import sympy
 from sympy import Symbol, Derivative
 
-#GENERAL_PARAMETERS----------------------------------------------------------------------------------------------------#
-graphTitle= "Raphson-Newton Calculation"
-
-# Data on the X axis #
-x_values = []
-x_name= "X"
-
-# Data on the Y axis #
-y_values = []
-y_name= "Y"
-
-# Limits of the graph #
-startLimit= 0
-endLimit= 10
-jump= 0.01
-
-# Estimated point root (ONE ROOT ONLY) #
-xi=0.1
+#Es mejor que este mas lejos del cero
+xi=1.5
 es= 0.0001
+mathematicaRoot=1
 
 #Raphson-Newton method-------------------------------------------------------------------------------------------------#
 def f(x):
-    y = ((pow(x, 2) - 10*x + 25) * (x - sympy.exp(-3*x)))
+    y = (x**8)-1
     return y
 
 # Find derivate of the function f(x) at a point xi #
@@ -53,6 +38,7 @@ while i <= 50:
     if ea < es:
         print("\nNo. of iterations: " + str(i + 1))
         print(xi1)
+        print("\nAccuracy: " + str(abs(1 - ((abs(mathematicaRoot - xi) / xi) * 100))) + " %")
         break
 
     # Reassignment of the x values #
@@ -63,26 +49,3 @@ while i <= 50:
         print("\nDid not converge in " + str(i) + " iterations")
 
     i+= 1
-
-#PLOTTING--------------------------------------------------------------------------------------------------------------#
-# Assign X and  Y values to axis #
-while startLimit < endLimit:
-    x_values.append(startLimit)
-    y_values.append(f(startLimit))
-    startLimit = startLimit + jump
-
-# Styles #
-"""plt.xkcd()"""
-
-# Add names and tags #
-fig, ax = plt.subplots()
-ax.set(xlabel= x_name, ylabel= y_name, title=graphTitle)
-
-# Add a grid #
-ax.grid()
-
-# Values #
-plt.plot(x_values, y_values, label='Python')
-
-# Plott data #
-plt.show()
