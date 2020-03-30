@@ -1,0 +1,21 @@
+xl = 0.001;
+xu = 0.05;
+xui = xu;
+xr = 0;
+i = 0;
+xr = (xl + xu)/2;
+error[x_, y_] := Abs[((x - y)/(x + y))]*100;
+f[_x] := (1/sqrt[x]) + 
+   2*log[((\[Epsilon]/(3.7*d))) + ((2.51/(r*sqrt[x])))];
+
+While[N[error[xu, xl]] > .0001 ,
+ 	xr = (xl + xu)/2;
+ 	If[(f[xl]*f[xr]) < 0, xu = xr];
+ 	If[(f[xl]*f[xr]) > 0, xl = xr];
+ 	i++
+  	If[i == 100, Break[]]
+ 	]
+Print["Root: ", N[xr]]
+Print["Percentage of error: ", N[error[xu, xl]]]
+Print["Iterations needed: ", i]
+Plot[f[x], {x, 0, xui}]
