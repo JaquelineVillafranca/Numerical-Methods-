@@ -1,0 +1,19 @@
+MATHEMATICA
+f[_x] := (1/sqrt[x]) + 
+   2*log[((\[Epsilon]/(3.7*d))) + ((2.51/(r*sqrt[x])))];
+n = 50;
+\[Epsilon]s = 0.0001;
+xi = 100;
+Do[
+ xi1 = xi - f[xi]/f'[xi];
+ If[Abs[f[xi1]] < 10^-8, 
+  Print["Root: ", N[xi1], " Itererations needed: ", i]; Break[]];
+ \[Epsilon]a = Abs[(xi1 - xi)/xi1];
+ If[\[Epsilon]a < \[Epsilon]s, 
+  Print["Root: ", N[xi1], "Itererations needed: ", i]; Break[]];
+ xi = xi1;
+ If[i == n, Print["Did not converge in ", n, " iterations."]]
+ , {i, 1, n}]
+Print["Percentage of error: ", N[\[Epsilon]a]]
+xu = xi1 + xi;
+Plot[f[x], {x, 0, xu}]
